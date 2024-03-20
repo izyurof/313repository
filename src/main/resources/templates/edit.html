@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit user</title>
+</head>
+<body>
+<h1>Edit user info</h1>
+<form th:method="PATCH" th:action="@{/admin/user/{id}(id=${edituser.getId()})}" th:object="${edituser}">
+    <div>
+        <label for="name">Name</label>
+        <input type="text" th:field="*{name}" id="name">
+        <div style="color: darkred" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </div>
+    <div>
+        <label for="lastName">Last name</label>
+        <input type="text" th:field="*{lastName}" id="lastName">
+        <div style="color: darkred" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+    </div>
+    <div>
+        <label for="age">Age</label>
+        <input type="text" th:field="*{age}" id="age">
+        <div style="color: darkred" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+    </div>
+    <div>
+        <label for="email">Email</label>
+        <input type="text" th:field="*{email}" id="email">
+        <div style="color: darkred" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" th:field="*{password}" id="password">
+        <div style="color: darkred" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+    </div>
+    <div>
+        <label>
+            <h3>Choose authorities for user:</h3>
+        </label>
+        <div th:each="role : ${allRoles}">
+            <input type="checkbox" th:id="${role.id}" th:name="roles"
+                   th:value="${role.role}" th:field="*{roles}" />
+            <label th:for="${role.role}" th:text="${role.role}"></label>
+        </div>
+    </div>
+    <button type="submit">Update</button>
+    <a href="#" th:href="@{/logout}">
+        <input type="submit" value="Logout"></a>
+
+</form>
+
+</body>
+</html>

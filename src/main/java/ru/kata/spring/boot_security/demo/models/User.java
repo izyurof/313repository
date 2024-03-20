@@ -60,7 +60,6 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
-    @NotBlank(message = "Поле с возрастом не должно быть пустым")
     @Min(value = 10, message = "Возраст не может быть меньше 10")
     @Max(value = 100, message = "Возраст не может быть больше 100")
     @Column(name = "age")
@@ -82,9 +81,13 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
+    }
+
+    public User(String name) {
+        this.name = name;
     }
 
     public User(String name, String lastName, Byte age, String email) {
@@ -134,6 +137,8 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -147,16 +152,12 @@ public class User implements UserDetails {
     }
 
     public void addRole(Role role) {
-        if (roles == null) {
-            roles = new HashSet<>();
-            roles.add(role);
-        }
         roles.add(role);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        return roles;
     }
 
     @Override

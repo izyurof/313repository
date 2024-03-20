@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User info</title>
+    <h3>
+        <p style="margin-left: 270px;">Your information</p>
+    </h3>
+
+    <head>
+        <meta charset="UTF-8"/>
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 40%;
+            }
+
+            th, td {
+                border: 2px solid black;
+                padding: 3px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Возраст</th>
+        <th>Электронная почта</th>
+        <th>Роль</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:each="role : ${user.roles}" th:text="${role.role}"></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<div>
+    <a href="#" th:href="@{/logout}">
+        <input type="submit" value="Logout"></a>
+</div>
+</body>
+</html>
