@@ -27,6 +27,7 @@ public class AdminController {
     private UserService userService;
     private RoleService roleService;
 
+
     @Autowired
     public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
@@ -84,14 +85,11 @@ public class AdminController {
     @GetMapping("/user/{id}")
     public String deleteUser(@PathVariable(value = "id") Long id, Model model) {
         model.addAttribute("deleteuser", userService.findUserById(id));
-        System.out.println(userService.findUserById(id).getName());
         return "delete";
     }
 
     @DeleteMapping("/user/{id}")
     public String removeUser(@ModelAttribute(name = "deleteuser") User user) {
-        System.out.println(user.getId());
-        System.out.println(user.getName());
         userService.deleteUser(user);
         return "redirect:/admin";
     }

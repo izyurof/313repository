@@ -46,26 +46,4 @@ public class UserServiceImpl implements UserService {
         return userDao.getAllUsers();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<User> findUserByUsername(String username) {
-        return userDao.findUserByUsername(username);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userDao.findUserByUsername(username);
-        User user1 = user.get();
-        Collection<? extends GrantedAuthority> authorities = user1.getAuthorities();
-        return new org.springframework.security.core.userdetails.User(user1.getUsername(), user1.getPassword(), authorities);
-    }
-//        return userDao.findUserByUsername(username)
-//                .map(
-//                        user -> new org.springframework.security.core.userdetails.User
-//                                (
-//                        user.getName(),
-//                        user.getPassword(),
-//                        user.getAuthorities())
-//                ).orElseThrow(() -> new UsernameNotFoundException(String.format("Пользователь '%s' не зарегистрирован", username)));
-//    }
 }
