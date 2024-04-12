@@ -2,35 +2,40 @@ package ru.kata.spring.boot_security.demo.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.services.UserService;
+import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
+import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.Set;
 
 @Component
 public class UserTest {
-    private UserService userService;
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public UserTest(UserService userService) {
-        this.userService = userService;
+    public UserTest(UserRepository userRepository, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @PostConstruct
+    @Transactional(readOnly = true)
     public void loadTestUser() {
-        Role roleAdmin = new Role("ROLE_ADMIN");
-        Role roleUser = new Role("ROLE_USER");
         User user = new User("user", "userov", (byte) 25, "user@gmail.com");
-        User admin = new User("admin", "adminov", (byte) 25, "admin@gmail.com");
-        user.setPassword("password");
-        user.addRole(roleUser);
-        admin.setPassword("password");
-        admin.addRole(roleAdmin);
-        userService.saveUser(user);
-        userService.saveUser(admin);
-        user.setRoles(Set.of(roleUser));
-        admin.setRoles(Set.of(roleAdmin));
+        User admin = new User("admin", "adminov", (byte) 23, "admin@gmail.com");
+        user.setPassword("$2a$12$iLuHjYDDzdzTHph1gWRFFe8F2TO7o2dG6.UUABtZ7GiP8LTvOwPgO");
+        admin.setPassword("$2a$12$iLuHjYDDzdzTHph1gWRFFe8F2TO7o2dG6.UUABtZ7GiP8LTvOwPgO");
+        Role roleUser = new Role("ROLE_USER");
+        Role roleAdmin = new Role("ROLE_ADMIN");
+        roleRepository.save(roleUser);
+        roleRepository.save(roleAdmin);
+        user.setRoles(Set.of(roleRepository.findById(1L).get()));
+        admin.setRoles(Set.of(roleRepository.findById(1L).get(), roleRepository.findById(2L).get()));
+        userRepository.save(user);
+        userRepository.save(admin);
     }
 }
