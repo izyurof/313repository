@@ -15,35 +15,46 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private UserDao userDao;
-    @Autowired
+
+    private final UserDao userDao;
+
+
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 
-    @Transactional
-    public void saveUser(User user) {
-        userDao.saveUser(user);
-    }
-
-    @Transactional(readOnly = true)
-    public User findUserById(Long id) {
+    @Override
+    public Optional<User> findUserById(Long id) {
         return userDao.findUserById(id);
     }
 
-    @Transactional
-    public void updateUser(User user) {
-        userDao.updateUser(user);
+    @Override
+    public Optional<User> findUserByName(String name) {
+        return userDao.findUserByName(name);
     }
 
-    @Transactional
-    public void deleteUser(User user) {
-        userDao.deleteUser(user);
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+        return userDao.findUserByEmail(email);
     }
 
-    @Transactional(readOnly = true)
+    @Override
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
+    @Override
+    public void saveUser(User user) {
+        userDao.saveUser(user);
+    }
+
+    @Override
+    public void removeUser(Long id) {
+        userDao.removeUser(id);
+    }
+
+    @Override
+    public void updateUser(User user, Long id) {
+        userDao.updateUser(user, id);
+    }
 }

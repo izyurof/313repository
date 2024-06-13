@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
-    void saveUser(User user);
-    User findUserById(Long id);
-    void updateUser(User user);
-    void deleteUser(User user);
+    Optional<User> findUserById(Long id);
+    Optional<User> findUserByName(String name);
+    Optional<User> findUserByEmail(String email);
     List<User> getAllUsers();
-    Optional<User> findUserByUsername(String username);
+    void saveUser(User user);
+    void removeUser(Long id);
+    void updateUser(User user, Long id);
 }

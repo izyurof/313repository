@@ -12,23 +12,16 @@ import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-    private RoleDao roleDao;
+    private final RoleDao roleDao;
 
-    @Autowired
     public RoleServiceImpl(RoleDao roleDao) {
         this.roleDao = roleDao;
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public void saveRole(Role role) {
-        roleDao.saveRole(role);
-    }
 
     @Override
-    @Transactional(readOnly = true)
-    public Role findRoleById(Long id) {
-        return roleDao.findRoleById(id);
+    public List<Role> getAllRoles() {
+        return roleDao.getAllRoles();
     }
 
     @Override
@@ -37,14 +30,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @Transactional
-    public void deleteRole(Role role) {
-        roleDao.deleteRole(role);
+    public void saveRole(Role role) {
+        roleDao.saveRole(role);
     }
-
-    @Override
-    public List<Role> getAllRoles() {
-        return roleDao.getAllRoles();
-    }
-
 }

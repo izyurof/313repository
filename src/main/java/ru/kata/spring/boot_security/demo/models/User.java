@@ -35,47 +35,22 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Long id;
 
-    @NotBlank(message = "Поле с именем не должно быть пустым")
-    @Size(
-            min = 2,
-            max = 64,
-            message = "Имя должно содержать не менее 2-х символов и не более 64")
-    @Pattern(
-            regexp = "^[A-Za-zА-ЯЁа-яё]+([- ][A-Za-zА-ЯЁа-яё]+)*$",
-            message = "Можно использовать русские и английские буквы, а также символы пробела и дефис"
-    )
     @Column(name = "name")
     private String name;
 
-    @NotBlank(message = "Поле с фамилией не должно быть пустым")
-    @Size(
-            min = 2,
-            max = 64,
-            message = "Имя должно содержать не менее 2-х символов и не более 64"
-    )
-    @Pattern(
-            regexp = "^[A-Za-zА-ЯЁа-яё]+([- ][A-Za-zА-ЯЁа-яё]+)*$",
-            message = "Можно использовать русские и английские буквы, а также символы пробела и дефис"
-    )
     @Column(name = "last_name")
     private String lastName;
 
-    @Min(value = 10, message = "Возраст не может быть меньше 10")
-    @Max(value = 100, message = "Возраст не может быть больше 100")
     @Column(name = "age")
     private Byte age;
 
-    @NotBlank(message = "Поле с электронной почтой не должно быть пустым")
-    @Pattern(regexp = "^[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$")
     @Column(name = "email")
     private String email;
 
-    @NotBlank(message = "Поле с паролем не должно быть пустым")
-    @Size(min = 4, max = 64, message = "Пароль должен содержать не менее 4 символов")
     @Column(name = "password")
     private String password;
 
-        @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -95,6 +70,15 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.age = age;
         this.email = email;
+    }
+
+    public User(String name, String lastName, Byte age, String email, String password, Set<Role> roles) {
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -201,5 +185,16 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, lastName, age, email);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }
