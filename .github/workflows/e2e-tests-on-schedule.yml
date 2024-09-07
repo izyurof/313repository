@@ -1,8 +1,8 @@
-name: Run e2e tests at 0:00
+name: example-workflow
 
 on:
   schedule:
-    - cron: '03 * * * *'
+    - cron: '*/1 * * * *'
 
 
 jobs:
