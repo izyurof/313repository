@@ -2,7 +2,7 @@ name: example-workflow
 
 on:
   schedule:
-    - cron: '* * * * *'
+    - cron: '*/10 * * * *'
 
 jobs:
   e2e_tests:
